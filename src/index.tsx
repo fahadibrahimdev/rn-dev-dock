@@ -1,9 +1,4 @@
-// export function multiply(a: number, b: number): Promise<number> {
-//   return Promise.resolve(a * b);
-// }
-
 import { Animated, View, type StyleProp, type ViewStyle } from 'react-native';
-// import SimpleButton from './SimpleButton';
 import AnimatedHeader from './AnimatedHeader';
 
 interface MainAnimatedHeaderProps {

@@ -14,7 +14,6 @@ interface MyComponentProps {
 
 const AnimatedHeader: React.FC<MyComponentProps> = ({ scrollY, leftComponentStyle, LeftComponent, rightComponentStyle, RightComponent }) => {
 
-    // const [HeaderHeight, setHeaderHeight] = useState<number>(100);
     const [HeaderHeight] = useState<number>(100);
 
     const headerHeight = scrollY.interpolate({
@@ -22,12 +21,6 @@ const AnimatedHeader: React.FC<MyComponentProps> = ({ scrollY, leftComponentStyl
         outputRange: [HeaderHeight, HeaderHeight - 30],
         extrapolate: 'clamp',
     });
-    // const HeaderHeight: number = 100; // Adjust this based on your header height
-
-    // const headerOpacity = scrollY.interpolate({
-    //     inputRange: [0, HeaderHeight / 2, HeaderHeight],
-    //     outputRange: [1, 0.7, 0],
-    // });
 
     const headerScale = scrollY.interpolate({
         inputRange: [0, 100],
@@ -35,29 +28,12 @@ const AnimatedHeader: React.FC<MyComponentProps> = ({ scrollY, leftComponentStyl
         extrapolate: 'clamp',
     });
 
-    // const rotate = scrollY.interpolate({
-    //     inputRange: [0, HeaderHeight / 2, HeaderHeight],
-    //     outputRange: ['0deg', '180deg', '360deg'],
-    // });
-
-    // const translateX = scrollY.interpolate({
-    //     inputRange: [0, HeaderHeight / 2, HeaderHeight],
-    //     outputRange: [0, -50, -100],
-    // });
-
     const headerTranslateX = scrollY.interpolate({
         inputRange: [0, 100],
         outputRange: [0, ((-screenWidth / 2) + 25 + (screenWidth * 0.15))], // Adjust 50 based on half of the width of the header
 
         extrapolate: 'clamp',
     });
-
-    // const headerTranslateY = scrollY.interpolate({
-    //     inputRange: [0, 100],
-    //     outputRange: [0, -25], // Adjust 50 based on half of the header's height
-    //     extrapolate: 'clamp',
-    // });
-
 
     const headerTextTranslateX = scrollY.interpolate({
         inputRange: [0, 100],
@@ -104,19 +80,16 @@ const AnimatedHeader: React.FC<MyComponentProps> = ({ scrollY, leftComponentStyl
                         ],
 
                         backgroundColor: 'skyblue',
-                        // alignItems: 'center',
-                        // justifyContent: 'center',
+
                     }}>
                     <Text numberOfLines={1} style={{ fontSize: 16, width: screenWidth * 0.30 }}>Header Title  asdfasdfasd asd f asd fa sdf asd fa sdf asd fa sdf asd f</Text>
                 </Animated.View>
 
                 <Animated.View style={
                     {
-                        // position: 'absolute',
-                        // opacity: headerOpacity,
+
                         transform: [
                             { translateX: headerTranslateX, },
-                            // { translateY: headerTranslateY },
                             { scale: headerScale }
                         ],
                         backgroundColor: 'skyblue',
@@ -129,7 +102,6 @@ const AnimatedHeader: React.FC<MyComponentProps> = ({ scrollY, leftComponentStyl
                             width: 100,
                             height: 100,
                             borderRadius: 50,
-                            // backgroundColor: "red"
                         }}
                         fallbackSource={require('./assets/placeholderimg.png')}
                     />
@@ -137,7 +109,6 @@ const AnimatedHeader: React.FC<MyComponentProps> = ({ scrollY, leftComponentStyl
                 </Animated.View>
 
             </View>
-            {/* <Text style={{ fontSize: 20, marginTop: 10 }}>User Name</Text> */}
             <View style={[{ width: screenWidth * 0.15, backgroundColor: 'orange' },
                 rightComponentStyle
             ]}>

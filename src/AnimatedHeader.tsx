@@ -30,7 +30,7 @@ const AnimatedHeader: React.FC<MyComponentProps> = ({
 
   const myViewRef = useRef(null);
 
-  const handleLayout = (event) => {
+  const handleLayout = (event: { nativeEvent: { layout: { width: any } } }) => {
     const { width } = event.nativeEvent.layout;
     setSystemWidth(width);
 
@@ -84,6 +84,7 @@ const AnimatedHeader: React.FC<MyComponentProps> = ({
         ref={myViewRef}
         onLayout={handleLayout}
         style={{
+          flexDirection: 'row',
           width: '100%',
           backgroundColor: 'red',
         }}

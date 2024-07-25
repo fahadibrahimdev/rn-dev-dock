@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   Animated,
-  Dimensions,
   StyleSheet,
   Text,
   View,
@@ -9,8 +8,6 @@ import {
   type ViewStyle,
 } from 'react-native';
 import ImageWithFallback from './ImageWithFallback';
-
-const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 interface MyComponentProps {
   scrollY: Animated.Value;
@@ -27,18 +24,18 @@ const AnimatedHeader: React.FC<MyComponentProps> = ({
   LeftComponent,
   rightComponentStyle,
   RightComponent,
-  orientation,
 }) => {
   const [HeaderHeight] = useState<number>(100);
-  const [systemWidth, setSystemWidth] = useState(screenWidth);
+  const [systemWidth, setSystemWidth] = useState(0);
 
-  useEffect(() => {
-    if (orientation === 'portraint') {
-      setSystemWidth(screenWidth);
-    } else {
-      setSystemWidth(screenHeight);
-    }
-  }, [orientation]);
+  const myViewRef = useRef(null);
+
+  const handleLayout = (event) => {
+    const { width } = event.nativeEvent.layout;
+    setSystemWidth(width);
+
+    console.log('fahad width: ', width);
+  };
 
   const headerHeight = scrollY.interpolate({
     inputRange: [0, 100],
@@ -84,69 +81,78 @@ const AnimatedHeader: React.FC<MyComponentProps> = ({
       ]}
     >
       <View
-        style={[
-          styles.leftView,
-          {
-            width: systemWidth * 0.15,
-          },
-          leftComponentStyle,
-        ]}
+        ref={myViewRef}
+        onLayout={handleLayout}
+        style={{
+          width: '100%',
+          backgroundColor: 'red',
+        }}
       >
-        {LeftComponent}
-      </View>
-
-      <View
-        style={[
-          styles.centerView,
-          {
-            width: systemWidth * 0.7,
-          },
-        ]}
-      >
-        <Animated.View
+        <View
           style={[
-            styles.centerView2,
+            styles.leftView,
             {
-              opacity: headerTextOpacity,
-              transform: [{ translateX: headerTextTranslateX }],
+              width: systemWidth * 0.15,
+            },
+            leftComponentStyle,
+          ]}
+        >
+          {LeftComponent}
+        </View>
+
+        <View
+          style={[
+            styles.centerView,
+            {
+              width: systemWidth * 0.7,
             },
           ]}
         >
-          <Text
-            numberOfLines={1}
-            style={[styles.centerViewTitle, { width: systemWidth * 0.3 }]}
+          <Animated.View
+            style={[
+              styles.centerView2,
+              {
+                opacity: headerTextOpacity,
+                transform: [{ translateX: headerTextTranslateX }],
+              },
+            ]}
           >
-            Header Title asdfasdfasd asd f asd fa sdf asd fa sdf asd fa sdf asd
-            f
-          </Text>
-        </Animated.View>
+            <Text
+              numberOfLines={1}
+              style={[styles.centerViewTitle, { width: systemWidth * 0.3 }]}
+            >
+              Header Title asdfasdfasd asd f asd fa sdf asd fa sdf asd fa sdf
+              asd f
+            </Text>
+          </Animated.View>
 
-        <Animated.View
+          <Animated.View
+            style={[
+              styles.centerViewImageContainer,
+              {
+                transform: [
+                  { translateX: headerTranslateX },
+                  { scale: headerScale },
+                ],
+              },
+            ]}
+          >
+            <ImageWithFallback
+              source={{ uri: 'https://www.w3schools.com/w3images/avatar2.png' }}
+              style={[styles.centerViewImageBox]}
+              fallbackSource={require('./assets/placeholderimg.png')}
+            />
+          </Animated.View>
+        </View>
+        <View
           style={[
-            styles.centerViewImageContainer,
-            {
-              transform: [
-                { translateX: headerTranslateX },
-                { scale: headerScale },
-              ],
-            },
+            styles.rightView,
+            { width: systemWidth * 0.15 },
+            rightComponentStyle,
           ]}
         >
-          <ImageWithFallback
-            source={{ uri: 'https://www.w3schools.com/w3images/avatar2.png' }}
-            style={[styles.centerViewImageBox]}
-            fallbackSource={require('./assets/placeholderimg.png')}
-          />
-        </Animated.View>
-      </View>
-      <View
-        style={[
-          styles.rightView,
-          { width: systemWidth * 0.15 },
-          rightComponentStyle,
-        ]}
-      >
-        {RightComponent}
+          {RightComponent}
+        </View>
       </View>
     </Animated.View>
   );

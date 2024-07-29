@@ -1,4 +1,10 @@
-import { Animated, View, type StyleProp, type ViewStyle } from 'react-native';
+import {
+  Animated,
+  View,
+  type ImageSourcePropType,
+  type StyleProp,
+  type ViewStyle,
+} from 'react-native';
 import AnimatedHeader from './AnimatedHeader';
 
 interface MainAnimatedHeaderProps {
@@ -7,7 +13,9 @@ interface MainAnimatedHeaderProps {
   LeftComponent: React.ReactNode;
   rightComponentStyle?: StyleProp<ViewStyle>;
   RightComponent: React.ReactNode;
-  orientation: string;
+  title: string;
+  description?: string;
+  avatarImg?: ImageSourcePropType;
 }
 
 const MainAnimatedHeader: React.FC<MainAnimatedHeaderProps> = ({
@@ -16,7 +24,9 @@ const MainAnimatedHeader: React.FC<MainAnimatedHeaderProps> = ({
   LeftComponent,
   rightComponentStyle,
   RightComponent,
-  orientation,
+  title,
+  description,
+  avatarImg,
 }) => {
   return (
     <View>
@@ -26,7 +36,9 @@ const MainAnimatedHeader: React.FC<MainAnimatedHeaderProps> = ({
         leftComponentStyle={leftComponentStyle}
         RightComponent={RightComponent}
         rightComponentStyle={rightComponentStyle}
-        orientation={orientation}
+        title={title}
+        description={description}
+        avatarImg={avatarImg}
       />
     </View>
   );

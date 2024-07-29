@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   View,
+  type ImageSourcePropType,
   type StyleProp,
   type ViewStyle,
 } from 'react-native';
@@ -15,7 +16,9 @@ interface MyComponentProps {
   LeftComponent: React.ReactNode;
   rightComponentStyle?: StyleProp<ViewStyle>;
   RightComponent: React.ReactNode;
-  orientation: string;
+  title: string;
+  description?: string;
+  avatarImg?: ImageSourcePropType;
 }
 
 const AnimatedHeader: React.FC<MyComponentProps> = ({
@@ -24,6 +27,9 @@ const AnimatedHeader: React.FC<MyComponentProps> = ({
   LeftComponent,
   rightComponentStyle,
   RightComponent,
+  title,
+  description,
+  avatarImg,
 }) => {
   const [HeaderHeight] = useState<number>(100);
   const [systemWidth, setSystemWidth] = useState(0);
@@ -83,11 +89,7 @@ const AnimatedHeader: React.FC<MyComponentProps> = ({
       <View
         ref={myViewRef}
         onLayout={handleLayout}
-        style={{
-          flexDirection: 'row',
-          width: '100%',
-          backgroundColor: 'red',
-        }}
+        style={styles.centerViewAll}
       >
         <View
           style={[
@@ -122,9 +124,16 @@ const AnimatedHeader: React.FC<MyComponentProps> = ({
               numberOfLines={1}
               style={[styles.centerViewTitle, { width: systemWidth * 0.3 }]}
             >
-              Header Title asdfasdfasd asd f asd fa sdf asd fa sdf asd fa sdf
-              asd f
+              {title || ''}
             </Text>
+            {!!description && (
+              <Text
+                numberOfLines={1}
+                style={[styles.centerViewTitle, { width: systemWidth * 0.3 }]}
+              >
+                {description}
+              </Text>
+            )}
           </Animated.View>
 
           <Animated.View
@@ -139,7 +148,11 @@ const AnimatedHeader: React.FC<MyComponentProps> = ({
             ]}
           >
             <ImageWithFallback
-              source={{ uri: 'https://www.w3schools.com/w3images/avatar2.png' }}
+              source={
+                avatarImg || {
+                  uri: 'https://www.w3schools.com/w3images/avatar2.png',
+                }
+              }
               style={[styles.centerViewImageBox]}
               fallbackSource={require('./assets/placeholderimg.png')}
             />
@@ -166,21 +179,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
   },
-  leftView: { backgroundColor: 'orange' },
+  centerViewAll: {
+    flexDirection: 'row',
+    width: '100%',
+  },
+  leftView: {},
   centerView2: {
     position: 'absolute',
-    backgroundColor: 'skyblue',
   },
   centerViewTitle: {
     fontSize: 16,
   },
   centerViewImageContainer: {
-    backgroundColor: 'skyblue',
     width: 100,
     height: 100,
   },
   centerView: {
-    backgroundColor: 'blue',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -189,7 +203,5 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 50,
   },
-  rightView: {
-    backgroundColor: 'orange',
-  },
+  rightView: {},
 });
